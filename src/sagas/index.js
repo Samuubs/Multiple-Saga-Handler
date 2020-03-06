@@ -1,16 +1,22 @@
-import { all, fork, takeEvery } from 'redux-saga/effects';
-import teste from './teste'
+import { all, fork, takeEvery, spawn, take } from 'redux-saga/effects';
+import {teste, workerSaga} from './teste'
 import * as ActionTypes from "../actions/types";
 
+import { testeScript } from './testeScript'
 
-function* workerSaga() {
-    alert("saga")
+
+function* workerSagaRoot() {
+    console.log("worker saga do root")
 }
 
 export default function* rootSaga() {
-    console.log("aaa")
-    yield takeEvery(ActionTypes.TESTE_SAGA, workerSaga);
-//   yield all([
-//       fork(teste)
-//   ]);
+    // yield takeEvery(ActionTypes.TESTE_SAGA, workerSagaRoot);
+    yield takeEvery(teste, workerSaga);
+    yield fork(testeScript);
+
+
+    // yield all([
+    //     fork(teste)
+    // ]);
+
 }
